@@ -1,7 +1,9 @@
 <!-- extend base layout -->
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
-{% block content %}
+{% block app_content %}
+    <h1>Sign In</h1>
 <script type="text/javascript">
 function set_openid(openid, pr)
 {
@@ -15,24 +17,22 @@ function set_openid(openid, pr)
     form.elements['openid'].value = openid;
 }
 </script>
-<h1>Sign In</h1>
-<form action="" method="post" name="login">
-    {{form.hidden_tag()}}
-    <p>
-        Please enter your OpenID, or select one of the providers below:<br>
-        {{form.openid(size=80)}}
-        {% for error in form.errors.openid %}
-        <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
-        |{% for pr in providers %}
-        <a href="javascript:set_openid('{{pr.url}}', '{{pr.name}}');">{{pr.name}}</a> |
-        {% endfor %}
-    </p>
-    <p>{{form.remember_me}} Remember Me</p>
-    <p><input type="submit" value="Sign In"></p>
-</form>
-
-<form action="" method="post" name="login">
+<!--<h1>Sign In</h1>
+-->
+<!--    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>-->
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form2) }}
+        </div>
+    </div>
+    <br>
+    <a href="{{ url_for('register') }}">Register</a>
+<!--<form action="" method="post" name="login">
     {{form2.hidden_tag()}}
     <table>
         <tr>
@@ -56,6 +56,6 @@ function set_openid(openid, pr)
             <td><input type="submit" value="Sign In"></td>
         </tr>
     </table>
-</form>
+</form>-->
 
 {% endblock %}
