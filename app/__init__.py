@@ -3,19 +3,29 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from flask_login import LoginManager
 from flask_openid import OpenID
+from flask_bootstrap import Bootstrap
 from config import basedir, ADMINS, MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD
+from .momentjs import momentjs
+from flask_moment import Moment
+
 
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 
+app.jinja_env.globals['momentjs'] = momentjs
+
 from flask_mail import Mail
 mail = Mail(app)
+
+moment = Moment(app)
 
 lm = LoginManager()
 lm.init_app(app)
 lm.login_view = 'login'
 oid = OpenID(app, os.path.join(basedir, 'tmp'))
+
+bootstrap = Bootstrap(app)
 
 if not app.debug:
     import logging

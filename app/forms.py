@@ -1,23 +1,35 @@
 from flask_wtf import Form
-from wtforms import TextField, BooleanField, TextAreaField
+from wtforms import TextField, BooleanField, TextAreaField, SubmitField
 from wtforms.validators import Required, Length
 from .models import User
 
 class LoginForm(Form):
     openid = TextField('openid', validators = [Required()])
     remember_me = BooleanField('remember_me', default = False)
+    submit = SubmitField('OK')
 
 class LoginForm2(Form):
     nickname = TextField('nickname', validators = [Required()])
     mail = TextField('mail', validators = [Required()])
     remember_me = BooleanField('remember_me', default = False)
-
+    submit = SubmitField('OK')
+    
+class RegisterForm(Form):
+    nickname = TextField('nickname', validators = [Required()])
+    mail = TextField('mail', validators = [Required()])
+    remember_me = BooleanField('remember_me', default = False)
+    submit = SubmitField('OK')
+    
     def validate(self):
         if not Form.validate(self):
             return False
-        user = User.query.filter_by(nickname = self.nickname.data).first()
-        if user != None:
+        user1 = User.query.filter_by(nickname = self.nickname.data).first()
+        if user1 != None:
             self.nickname.errors.append('This nickname is already in use. Please choose another one.')
+            return False
+        user1 = User.query.filter_by(email = self.mail.data).first()
+        if user1 != None:
+            self.mail.errors.append('This nickname is already in use. Please choose another one.')
             return False
         return True
     
